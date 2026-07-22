@@ -4,24 +4,30 @@ from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
 from ytdl_site.sitemaps import StaticViewSitemap
 from django.http import HttpResponse
+from downloader.views import robots_txt
 
+
+from django.urls import path, include
+from django.contrib.sitemaps.views import sitemap
+from ytdl_site.sitemaps import StaticViewSitemap
+
+from django.http import HttpResponse
 
 sitemaps = {
     "static": StaticViewSitemap,
 }
 
-
 def robots_txt(request):
     return HttpResponse(
-        """User-agent: *
-Allow: /
-
-Sitemap: https://arayoutubedownloader.up.railway.app/sitemap.xml
-"""
+        "User-agent: *\n"
+        "Allow: /\n\n"
+        "Sitemap: https://arayoutubedownloader.up.railway.app/sitemap.xml",
+        content_type="text/plain",
     )
 
-
-urlpatterns = [
+urlpatterns = [ 
+     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}),
+    path("robots.txt", robots_txt),
     path('', views.index, name='index'),
     path('api/request/', views.api_request, name='api_request'),
     path('api/progress/', views.api_progress, name='api_progress'),
@@ -29,13 +35,5 @@ urlpatterns = [
     path('robots.txt', views.robots, name='robots'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
     
-        path(
-            "sitemap.xml",
-            sitemap,
-            {"sitemaps": sitemaps},
-            name="django.contrib.sitemaps.views.sitemap",
-        ),
-    
-        path("robots.txt", robots_txt),
 
 ]

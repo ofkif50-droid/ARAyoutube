@@ -189,3 +189,17 @@ def sitemap(request):
         '</urlset>\n'
     )
     return HttpResponse(body, content_type='application/xml')
+
+
+
+from django.http import HttpResponse
+
+def robots_txt(request):
+    return HttpResponse(
+        """User-agent: *
+Allow: /
+
+Sitemap: https://arayoutubedownloader.up.railway.app/sitemap.xml
+""",
+        content_type="text/plain",
+    )
