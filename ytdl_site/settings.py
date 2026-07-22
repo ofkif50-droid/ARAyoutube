@@ -23,11 +23,18 @@ SECRET_KEY = os.environ.get(
 )
 
 DEBUG = _env_bool("DJANGO_DEBUG", False)
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "arayoutubedownloader.up.railway.app",
+]
 
-ALLOWED_HOSTS = _env_list(
-    "DJANGO_ALLOWED_HOSTS",
-    "localhost,127.0.0.1,0.0.0.0,.up.railway.app",
-)
+CSRF_TRUSTED_ORIGINS = [
+    "https://arayoutubedownloader.up.railway.app",
+]
+
+
+
 
 CSRF_TRUSTED_ORIGINS = _env_list(
     "DJANGO_CSRF_TRUSTED_ORIGINS",
@@ -35,20 +42,28 @@ CSRF_TRUSTED_ORIGINS = _env_list(
 )
 
 INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
     "downloader",
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
+     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+        "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 
 ROOT_URLCONF = "ytdl_site.urls"
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -57,6 +72,8 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
