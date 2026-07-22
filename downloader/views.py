@@ -203,3 +203,13 @@ Sitemap: https://arayoutubedownloader.up.railway.app/sitemap.xml
 """,
         content_type="text/plain",
     )
+
+
+
+from django.http import HttpResponse
+
+def google_verify(request):
+    return HttpResponse(
+        "google-site-verification: google55e2cfdb79c0b019.html",
+        content_type="text/plain",
+    )

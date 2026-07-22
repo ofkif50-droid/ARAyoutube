@@ -5,6 +5,7 @@ from django.contrib.sitemaps.views import sitemap
 from ytdl_site.sitemaps import StaticViewSitemap
 from django.http import HttpResponse
 from downloader.views import robots_txt
+from downloader.views import google_verify
 
 
 from django.urls import path, include
@@ -34,6 +35,10 @@ urlpatterns = [
     path('stream/', views.stream_proxy, name='stream_proxy'),
     path('robots.txt', views.robots, name='robots'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
+      path(
+        "google55e2cfdb79c0b019.html",
+        google_verify,
+    ),
     
 
 ]
