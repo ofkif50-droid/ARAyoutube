@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تنزيل: {{ title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/app.css' %}?v=11">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="container header-inner">
+        <a class="brand" href="/">
+          <span class="brand-icon"><i class="fa-brands fa-youtube"></i></span>
+          <span class="brand-text">يو تيوب <span class="brand-accent">داون لودر</span></span>
+        </a>
+        <nav class="header-nav">
+          <a href="/" class="badge"><i class="fa-solid fa-arrow-right"></i> رجوع للبحث</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="dl-page">
+        <div class="dl-card">
+          <div class="dl-head">
+            <span class="dl-type-badge">
+              {% if fmt_type == 'merged' %}<i class="fa-solid fa-star"></i> جودة عالية مدمجة
+              {% elif fmt_type == 'audio' %}<i class="fa-solid fa-music"></i> صوت فقط
+              {% else %}<i class="fa-solid fa-download"></i> تحميل مباشر{% endif %}
+            </span>
+            <h1 class="dl-title">{{ title }}</h1>
+            <div class="dl-meta">
+              <span class="meta-chip"><i class="fa-solid fa-fingerprint"></i> <code id="vidDisplay">{{ video_id }}</code></span>
+              {% if height %}<span class="meta-chip"><i class="fa-solid fa-video"></i> {{ height }}p</span>{% endif %}
+              {% if fps %}<span class="meta-chip"><i class="fa-solid fa-gauge"></i> {{ fps }}fps</span>{% endif %}
+              {% if ext %}<span class="meta-chip"><i class="fa-solid fa-file"></i> {{ ext|upper }}</span>{% endif %}
+            </div>
+          </div>
+
+          <div class="dl-body">
+            {% if fmt_type == 'merged' %}
+              <div class="dl-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                سيتم استخراج روابط حديثة من يوتيوب، ثم تنزيل الفيديو والصوت مباشرة من خوادم يوتيوب إلى متصفحك، ودمجهما في ملف واحد داخل المتصفح — دون أي معالجة على السيرفر.
+              </div>
+
+              <div id="muxArea" class="mux-area">
+                <button id="muxBtn" class="dl-btn video" type="button">
+                  <span class="dl-btn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                  <span class="dl-btn-text">
+                    <span class="dl-btn-title">دمج وتنزيل ملف واحد</span>
+                    <span class="dl-btn-sub">{{ height }}p · {{ ext|upper }} · فيديو + صوت</span>
+                  </span>
+                </button>
+
+                <div id="muxProgress" class="mux-progress" hidden>
+                  <div class="mux-stages">
+                    <div class="mux-stage" data-stage="fresh"><i class="fa-regular fa-circle"></i> استخراج روابط حديثة</div>
+                    <div class="mux-stage" data-stage="engine"><i class="fa-regular fa-circle"></i> تحميل المحرك</div>
+                    <div class="mux-stage" data-stage="video"><i class="fa-regular fa-circle"></i> تنزيل الفيديو</div>
+                    <div class="mux-stage" data-stage="audio"><i class="fa-regular fa-circle"></i> تنزيل الصوت</div>
+                    <div class="mux-stage" data-stage="mux"><i class="fa-regular fa-circle"></i> الدمج</div>
+                    <div class="mux-stage" data-stage="done"><i class="fa-regular fa-circle"></i> الحفظ</div>
+                  </div>
+                  <div class="mux-bar-wrap"><div class="mux-bar"></div></div>
+                  <div class="mux-status">
+                    <span class="mux-stage-label">جارٍ التحضير…</span>
+                    <span class="mux-pct">0%</span>
+                  </div>
+                </div>
+              </div>
+            {% else %}
+              <div class="dl-notice ok">
+                <i class="fa-solid fa-circle-check"></i>
+                سيتم استخراج رابط حديث من يوتيوب وتنزيل الملف مباشرة من خوادم يوتيوب الخارجية.
+              </div>
+              <div class="dl-links">
+                <button id="directBtn" class="dl-btn video" type="button">
+                  <span class="dl-btn-icon"><i class="fa-solid fa-download"></i></span>
+                  <span class="dl-btn-text">
+                    <span class="dl-btn-title">تنزيل الآن</span>
+                    <span class="dl-btn-sub">{% if height %}{{ height }}p · {% endif %}{{ ext|upper }} · رابط خارجي مباشر</span>
+                  </span>
+                </button>
+              </div>
+            {% endif %}
+
+            <div class="dl-actions">
+              <a class="dl-back" href="/"><i class="fa-solid fa-arrow-right"></i> تحميل فيديو آخر</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><p>التنزيل خارجي مباشر من خوادم يوتيوب — لا يمرّ أي ملف بالسيرفر.</p></div>
+    </footer>
+  </div>
+
+  {% load static %}
+  <script id="dl-config" type="application/json">{{ cfg_json|safe }}</script>
+  <script src="{% static 'js/mux.js' %}?v=11"></script>
+</body>
+</html>

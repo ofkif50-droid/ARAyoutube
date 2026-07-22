@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: ara-downloader-youtube
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn ytdl_site.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 180
+    envVars:
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_ALLOWED_HOSTS
+        sync: false
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "true"
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: RAPIDAPI_HOST
+        value: "youtube-download-info-api.p.rapidapi.com"
+      - key: PYTHON_VERSION
+        value: "3.13"
